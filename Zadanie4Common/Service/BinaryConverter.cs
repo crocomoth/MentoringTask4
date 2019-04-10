@@ -67,5 +67,10 @@ namespace Zadanie4Common.Service
 
             return docMessage;
         }
+
+        public string GetStringFromByteArray(byte[] array)
+        {
+            return Encoding.UTF8.GetString(array);
+        }
     }
 }

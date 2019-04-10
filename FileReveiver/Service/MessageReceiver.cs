@@ -14,7 +14,7 @@ namespace FileReveiver.Service
         private const string QueueName = "docqueue2";
         private QueueClient queueClient;
 
-        public event Action<byte[]> ReceivedData; 
+        public event Action<byte[], string> ReceivedData; 
 
         public MessageReceiver()
         {
@@ -30,7 +30,7 @@ namespace FileReveiver.Service
         private async Task ReceiveMessagesAsync(Message message, CancellationToken token)
         {
             var data = message.Body;
-            ReceivedData?.Invoke(data);
+            ReceivedData?.Invoke(data, message.SessionId);
 
             await queueClient.CompleteAsync(message.SystemProperties.LockToken);
         }

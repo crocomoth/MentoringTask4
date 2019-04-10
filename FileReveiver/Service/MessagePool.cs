@@ -10,17 +10,19 @@ namespace FileReveiver.Service
 {
     public class MessagePool
     {
-        private Dictionary<string, List<Message>> pool;
-        public List<List<Message>> FinishedSequences { get; set; }
+        private Dictionary<string, List<DocMessage>> pool;
+        public List<List<DocMessage>> FinishedSequences { get; set; }
+        private List<string> keysToRemove;
 
         public MessagePool()
         {
-            pool = new Dictionary<string, List<Message>>();
+            pool = new Dictionary<string, List<DocMessage>>();
+            keysToRemove = new List<string>();
         }
 
-        public void AppendToSequence(string sessionId, Message message)
+        public void AppendToSequence(string sessionId, DocMessage message)
         {
-            List<Message> buf;
+            List<DocMessage> buf;
 
             if (pool.ContainsKey(sessionId))
             {
@@ -31,8 +33,87 @@ namespace FileReveiver.Service
             }
             else
             {
-                pool.Add(sessionId, new List<Message>() {message});
+                pool.Add(sessionId, new List<DocMessage>() {message});
             }
+        }
+
+        public List<List<DocMessage>> FindFinished()
+        {
+            FinishedSequences.Clear();
+
+            foreach (var pair in pool)
+            {
+                if (CheckIfElemIsFinished(pair.Value))
+                {
+                    FinishedSequences.Add(pair.Value);
+                    keysToRemove.Add(pair.Key);
+                }
+            }
+
+            RemoveFinished();
+            SortFinished();
+
+            return FinishedSequences;
+        }
+
+        private void SortFinished()
+        {
+            Comparison<DocMessage> comparison = new Comparison<DocMessage>((x, y) => x.Order > y.Order ? 1 : -1);
+
+            foreach (var list in FinishedSequences)
+            {
+                list.Sort(comparison);
+            }
+        }
+
+        private void RemoveFinished()
+        {
+            foreach (var elem in keysToRemove)
+            {
+                pool.Remove(elem);
+            }
+
+            keysToRemove.Clear();
+        }
+
+        private bool CheckIfElemIsFinished(List<DocMessage> list)
+        {
+            if(CheckIfAllElemsPresent(list) && CheckIfAllDataIsPresent(list))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool CheckIfAllDataIsPresent(List<DocMessage> list)
+        {
+            DocMessage endNode = list.FirstOrDefault(x => x.MessageType == MessageType.End);
+            if (endNode == null)
+            {
+                return false;
+            }
+
+            if (list.Count - 1 == endNode.Order)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool CheckIfAllElemsPresent(List<DocMessage> list)
+        {
+            bool hasHeader = list.Any(x => x.MessageType == MessageType.Start);
+            bool hasData = list.Any(x => x.MessageType == MessageType.Data);
+            bool hasEnd = list.Any(x => x.MessageType == MessageType.End);
+
+            if (hasHeader && hasData && hasEnd)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
