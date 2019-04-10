@@ -27,5 +27,10 @@ namespace FileSender
                 fileSender.SendFile(path).GetAwaiter();
             }
         }
+
+        private void CloseConnectionButton_Click(object sender, EventArgs e)
+        {
+            fileSender.CloseConnection().GetAwaiter();
+        }
     }
 }

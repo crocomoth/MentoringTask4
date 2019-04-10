@@ -30,6 +30,7 @@
         {
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.OpenFileButton = new System.Windows.Forms.Button();
+            this.CloseConnectionButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -46,11 +47,22 @@
             this.OpenFileButton.UseVisualStyleBackColor = true;
             this.OpenFileButton.Click += new System.EventHandler(this.OpenFileButton_Click);
             // 
+            // CloseConnectionButton
+            // 
+            this.CloseConnectionButton.Location = new System.Drawing.Point(290, 108);
+            this.CloseConnectionButton.Name = "CloseConnectionButton";
+            this.CloseConnectionButton.Size = new System.Drawing.Size(75, 23);
+            this.CloseConnectionButton.TabIndex = 1;
+            this.CloseConnectionButton.Text = "Close";
+            this.CloseConnectionButton.UseVisualStyleBackColor = true;
+            this.CloseConnectionButton.Click += new System.EventHandler(this.CloseConnectionButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.CloseConnectionButton);
             this.Controls.Add(this.OpenFileButton);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -62,6 +74,7 @@
 
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button OpenFileButton;
+        private System.Windows.Forms.Button CloseConnectionButton;
     }
 }
 

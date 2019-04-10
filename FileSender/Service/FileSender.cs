@@ -38,6 +38,15 @@ namespace FileSender.Service
                     await messageSender.SendMessage(elem, sessionId);
                 }
             }
+            else
+            {
+                await messageSender.SendMessage(data);
+            }
+        }
+
+        public async Task CloseConnection()
+        {
+            await messageSender.CloseConnection();
         }
     }
 }
