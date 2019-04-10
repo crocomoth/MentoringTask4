@@ -43,5 +43,29 @@ namespace Zadanie4Common.Service
 
             return result;
         }
+
+        public List<DocMessage> DeserializeBytesToList(List<byte[]> data)
+        {
+            var result = new List<DocMessage>();
+
+            foreach (var elem in data)
+            {
+                result.Add(DeserializeDocMessage(elem));
+            }
+
+            return result;
+        }
+
+        public DocMessage DeserializeDocMessage(byte[] data)
+        {
+            DocMessage docMessage;
+
+            using (var stream = new MemoryStream(data))
+            {
+                docMessage = (DocMessage)formatter.Deserialize(stream);
+            }
+
+            return docMessage;
+        }
     }
 }

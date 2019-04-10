@@ -128,6 +128,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\FileReceiver.cs" />
     <Compile Include="Service\MessageConverter.cs" />
+    <Compile Include="Service\MessagePool.cs" />
     <Compile Include="Service\MessageReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
