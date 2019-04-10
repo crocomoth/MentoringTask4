@@ -19,12 +19,12 @@ namespace FileSender
             fileSender = new Service.FileSender();
         }
 
-        private void OpenFileButton_Click(object sender, EventArgs e)
+        private async void OpenFileButton_Click(object sender, EventArgs e)
         {
             if (this.openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 var path = openFileDialog1.FileName;
-                fileSender.SendFile(path).GetAwaiter();
+                await fileSender.SendFile(path);
             }
         }
 

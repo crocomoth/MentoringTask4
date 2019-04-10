@@ -4,20 +4,25 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zadanie4Common.Model;
+using Zadanie4Common.Service;
 
 namespace FileSender.Service
 {
     public class FileSender
     {
         private readonly MessageSender messageSender;
-        private readonly ArraySplitter arraySplitter;
+        private MessageConverter messageConverter;
+        private BinaryConverter converter;
+
         private string path = AppDomain.CurrentDomain.BaseDirectory;
         private const int Threshold = 200 * 1000;
 
         public FileSender()
         {
             messageSender = new MessageSender();
-            arraySplitter = new ArraySplitter();
+            messageConverter = new MessageConverter();
+            converter = new BinaryConverter();
         }
 
         public async Task SendFile(string filePath)
@@ -28,19 +33,14 @@ namespace FileSender.Service
             }
 
             var data = File.ReadAllBytes(filePath);
-            if (data.Length > Threshold)
-            {
-                var sessionId = Guid.NewGuid();
-                var splittedData = arraySplitter.Split(data, Threshold);
 
-                foreach (var elem in splittedData)
-                {
-                    await messageSender.SendMessage(elem, sessionId);
-                }
-            }
-            else
+            List<DocMessage> docMessages = messageConverter.ConvertToMessages(data, Threshold, filePath);
+            List<byte[]> serializedList = converter.SerializeListToBytes(docMessages);
+            Guid sessionId = Guid.NewGuid();
+
+            foreach (var elem in serializedList)
             {
-                await messageSender.SendMessage(data);
+                await messageSender.SendMessage(elem, sessionId);
             }
         }
 

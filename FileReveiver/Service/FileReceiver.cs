@@ -30,9 +30,9 @@ namespace FileReveiver.Service
         {
             for (int i = 0; i < 100; i++)
             {
-                if (File.Exists(filePath + $"//{i}"))
+                if (!File.Exists(filePath + $"//{i}"))
                 {
-                    return filePath + $"//{i}";
+                    return filePath + $"//{i}.pdf";
                 }
             }
 

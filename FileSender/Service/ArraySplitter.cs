@@ -10,6 +10,11 @@ namespace FileSender.Service
     {
         public byte[][] Split(byte[] array, int size)
         {
+            if (array.Length <= size)
+            {
+                return new[] {array};
+            }
+
             int currentSize = 0;
             List<byte[]> result = new List<byte[]>(array.Length / size);
 
