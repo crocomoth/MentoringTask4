@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\AzureDoc.cs" />
     <Compile Include="Model\DocMessage.cs" />
     <Compile Include="Model\Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

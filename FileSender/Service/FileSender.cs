@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Zadanie4Common.Model;
 using Zadanie4Common.Service;
@@ -12,10 +10,9 @@ namespace FileSender.Service
     public class FileSender
     {
         private readonly MessageSender messageSender;
-        private MessageConverter messageConverter;
-        private BinaryConverter converter;
+        private readonly MessageConverter messageConverter;
+        private readonly BinaryConverter converter;
 
-        private string path = AppDomain.CurrentDomain.BaseDirectory;
         private const int Threshold = 200 * 1000;
 
         public FileSender()
@@ -36,7 +33,7 @@ namespace FileSender.Service
 
             List<DocMessage> docMessages = messageConverter.ConvertToMessages(data, Threshold, filePath);
             List<byte[]> serializedList = converter.SerializeListToBytes(docMessages);
-            Guid sessionId = Guid.NewGuid();
+            var sessionId = Guid.NewGuid();
 
             foreach (var elem in serializedList)
             {

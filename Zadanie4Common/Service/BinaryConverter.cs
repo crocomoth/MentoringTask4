@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Threading.Tasks;
 using Zadanie4Common.Model;
 
 namespace Zadanie4Common.Service
 {
     public class BinaryConverter
     {
-        private IFormatter formatter;
+        private readonly IFormatter formatter;
 
         public BinaryConverter()
         {

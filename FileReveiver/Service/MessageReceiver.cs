@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
@@ -10,15 +7,15 @@ namespace FileReveiver.Service
 {
     public class MessageReceiver
     {
-        private readonly string connectionString = "Endpoint=sb://papiunenkazadanie4.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=+YXUsDUFIoIrlB4D7HGHY0vQxXtSLz9k22BD1POVpYM=";
+        private const string ConnectionString = "Endpoint=sb://papiunenkazadanie4.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=+YXUsDUFIoIrlB4D7HGHY0vQxXtSLz9k22BD1POVpYM=";
         private const string QueueName = "docqueue2";
-        private QueueClient queueClient;
+        private readonly QueueClient queueClient;
 
         public event Action<byte[], string> ReceivedData; 
 
         public MessageReceiver()
         {
-            queueClient = new QueueClient(connectionString, QueueName);
+            queueClient = new QueueClient(ConnectionString, QueueName);
             var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
             {
                 MaxConcurrentCalls = 1,

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zadanie4Common.Model;
 using Zadanie4Common.Service;
 
@@ -10,7 +6,7 @@ namespace FileReveiver.Service
 {
     public class MessageConverter
     {
-        private BinaryConverter binaryConverter;
+        private readonly BinaryConverter binaryConverter;
 
         public MessageConverter()
         {

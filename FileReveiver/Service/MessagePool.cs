@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
 using Zadanie4Common.Model;
 
 namespace FileReveiver.Service
 {
     public class MessagePool
     {
-        private Dictionary<string, List<DocMessage>> pool;
+        private readonly Dictionary<string, List<DocMessage>> pool;
         public List<List<DocMessage>> FinishedSequences { get; set; }
-        private List<string> keysToRemove;
+        private readonly List<string> keysToRemove;
 
         public MessagePool()
         {
@@ -57,6 +53,9 @@ namespace FileReveiver.Service
 
             return FinishedSequences;
         }
+
+
+        #region Checks
 
         private void SortFinished()
         {
@@ -115,5 +114,7 @@ namespace FileReveiver.Service
 
             return false;
         }
+
+        #endregion
     }
 }
