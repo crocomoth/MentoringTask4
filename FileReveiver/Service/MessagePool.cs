@@ -17,6 +17,7 @@ namespace FileReveiver.Service
         public MessagePool()
         {
             pool = new Dictionary<string, List<DocMessage>>();
+            FinishedSequences = new List<List<DocMessage>>();
             keysToRemove = new List<string>();
         }
 
@@ -40,6 +41,7 @@ namespace FileReveiver.Service
         public List<List<DocMessage>> FindFinished()
         {
             FinishedSequences.Clear();
+            keysToRemove.Clear();
 
             foreach (var pair in pool)
             {
@@ -58,11 +60,9 @@ namespace FileReveiver.Service
 
         private void SortFinished()
         {
-            Comparison<DocMessage> comparison = new Comparison<DocMessage>((x, y) => x.Order > y.Order ? 1 : -1);
-
             foreach (var list in FinishedSequences)
             {
-                list.Sort(comparison);
+                list.Sort((x, y) => x.Order > y.Order ? 1 : -1);
             }
         }
 

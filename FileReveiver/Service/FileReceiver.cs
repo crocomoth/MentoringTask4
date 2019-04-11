@@ -14,10 +14,12 @@ namespace FileReveiver.Service
         private MessageReceiver messageReceiver;
         private BinaryConverter binaryConverter;
         private MessagePool messagePool;
+        private MessageConverter messageConverter;
         private string filePath = AppDomain.CurrentDomain.BaseDirectory;
 
         public FileReceiver()
         {
+            messageConverter = new MessageConverter();
             binaryConverter = new BinaryConverter();
             messagePool = new MessagePool();
             messageReceiver = new MessageReceiver();
@@ -37,15 +39,23 @@ namespace FileReveiver.Service
 
             foreach (var list in finished)
             {
-                foreach (var docPart in list)
+                DocMessage header = list.First(x => x.MessageType == MessageType.Start);
+                var filename = messageConverter.GetFileTitle(header);
+
+                var dataParts = list.FindAll(x => x.MessageType == MessageType.Data).ToList();
+                // put first part in buffer
+                byte[] buffer = dataParts[0].Data;
+                // fill in the buffer
+                for (int i = 1; i < dataParts.Count; i++)
                 {
-                    //var stream = File.Create(filePath)
+                    buffer = messageConverter.AppendToArray(buffer, dataParts[i].Data);
                 }
+
+                var stream = File.Create(filePath + filename);
+                stream.Write(buffer, 0, buffer.Length);
+                stream.Close();
             }
 
-            var fileName = FindFileName();
-            var stream = File.Create(fileName);
-            stream.Write(data, 0, data.Length);
             Console.WriteLine("received message");
         }
 
